@@ -26,7 +26,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var background1: SKSpriteNode!
     var background2: SKSpriteNode!
     var background3: SKSpriteNode!
-    var CameraNode = SKCameraNode()
     var player: SKSpriteNode!
     var isJumping: Bool = false
     var life: Int = 3
@@ -34,18 +33,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var GameOver = false
     let backgroundSpeed: CGFloat = 3.0
     var scoreLabel: SKLabelNode!
-    var playableRect: CGRect {
-        let ratio: CGFloat
-        switch UIScreen.main.nativeBounds.height{
-        case 2688, 1792, 2436:
-            ratio = 2.16
-        default:
-            ratio = 16/9
-        }
-        let playableHeight = size.width / ratio
-        let playableMargin = (size.height - playableHeight)/2.0
-        return CGRect(x: 0.0, y: playableMargin, width: size.width, height: playableHeight)
-    }
     var score:Int = 0 {
         didSet{
             scoreLabel.text = "Score: \(score)"
@@ -57,32 +44,29 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         self.setUp()
         self.SetUp()
         self.startStudentsCycle()
+        
     }
     
     func setUp() {
         
+        let backgroundSound = SKAudioNode(fileNamed: "santosong.mp3")
+        self.addChild(backgroundSound)
+        
         physicsWorld.contactDelegate = self
         
-        background1 = SKSpriteNode(imageNamed: "background_1")
+        background1 = SKSpriteNode(imageNamed: "bg")
         background1.position = CGPoint(x: 0, y: 0)
         background1.zPosition = -1
         background1.size = CGSize(width: self.frame.size.width, height: self.frame.size.height)
         
         self.addChild(background1)
         
-        background2 = SKSpriteNode(imageNamed: "background_2")
+        background2 = SKSpriteNode(imageNamed: "bg")
         background2.position = CGPoint(x: background1.size.width, y: 0)
         background2.zPosition = -1
         background2.size = CGSize(width: self.frame.size.width, height: self.frame.size.height)
         
         self.addChild(background2)
-        
-        background3 = SKSpriteNode(imageNamed: "background_3")
-        background3.position = CGPoint(x: background1.size.width, y: 0)
-        background3.zPosition = -1
-        background3.size = CGSize(width: self.frame.size.width, height: self.frame.size.height)
-        
-        self.addChild(background3)
         
         player = SKSpriteNode(imageNamed: "player_1")
         player.name = "player"
@@ -124,9 +108,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     override func update(_ currentTime: TimeInterval) {
         moveBackground()
-        if (life == 0) {
-            showGameOverScreen()
-        }
     }
     
     func moveBackground() {
@@ -226,11 +207,11 @@ extension GameScene {
         
         if let node = firstBody.node, node.name == "student" {
             node.removeFromParent()
-            life -= 1
+            handleGameOver()
         }
         if let node = secondBody.node, node.name == "student" {
             node.removeFromParent()
-            life -= 1
+            handleGameOver()
         }
         
     }
@@ -241,42 +222,19 @@ extension GameScene {
 
 extension GameScene {
     
-    struct GameOverWrapper: UIViewControllerRepresentable {
-        
-        var score: Int
-        
-        func makeUIViewController(context: Context) -> UIViewController {
-            let hostingController = UIHostingController(rootView: GameOverView(score: score))
-            return hostingController
-        }
-        
-        func updateUIViewController(_ uiViewController: UIViewController, context: Context) {
-            // Update the view controller if needed
-        }
-    }
-    
-    func showGameOverScreen() {
-        let gameOverWrapper = GameOverWrapper(score: score)
-        self.view?.window?.rootViewController?.present(
-            UIHostingController(rootView: gameOverWrapper),
-            animated: true,
-            completion: nil
-        )
-    }
-    
     func SetUp() {
-        let node1 = SKSpriteNode(imageNamed: "Heart")
-        let node2 = SKSpriteNode(imageNamed: "Heart")
-        let node3 = SKSpriteNode(imageNamed: "Heart")
+        let node1 = SKSpriteNode(imageNamed: "heart")
+        let node2 = SKSpriteNode(imageNamed: "heart")
+        let node3 = SKSpriteNode(imageNamed: "heart")
+        heartsNodes.append(node1)
+        heartsNodes.append(node2)
+        heartsNodes.append(node3)
         SetUpLifePos(node1, i:70.0, j:0.0)
         SetUpLifePos(node2, i:120.0, j:0.0)
         SetUpLifePos(node3, i:170.0, j:0.0)
     }
     
     func SetUpLifePos (_ node: SKSpriteNode, i: CGFloat, j: CGFloat) {
-        _ = playableRect.width
-        _ = playableRect.height
-        
         node.zPosition = 50.0
         node.position = CGPoint(x: -self.frame.size.width/2 + i, y: self.frame.size.height/2 - 30)
         self.addChild(node)
@@ -284,13 +242,17 @@ extension GameScene {
     
     func handleGameOver() {
         life -= 1
-        print("Current life: \(life)")
-        
-        if life >= 0 {
-            heartsNodes[life].texture = SKTexture(imageNamed: "heart2")
-        }
-        if life <= 0 && !GameOver {
-            GameOver = true
+        heartsNodes[life].texture = SKTexture(imageNamed: "heart2")
+        if (life == 0) {
+            presentNewScene()
         }
     }
-   }
+    
+    func presentNewScene() {
+        let newScene = GameOverScene(size: self.size)
+        newScene.scaleMode = self.scaleMode
+
+        self.view?.presentScene(newScene, transition: SKTransition.crossFade(withDuration: 1.0))
+    }
+    
+}
