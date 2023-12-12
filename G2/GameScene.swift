@@ -17,6 +17,7 @@ struct PhysicsCategory {
     static let student : UInt32 = 0b10
     
     // CIAO
+    // ciao di nuovo
     
 }
 
