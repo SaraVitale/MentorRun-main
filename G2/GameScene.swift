@@ -28,6 +28,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var background3: SKSpriteNode!
     var player: SKSpriteNode!
     var isJumping: Bool = false
+    var isDoubleJumping: Bool = false
     var life: Int = 3
     var heartsNodes: [SKSpriteNode] = []
     var GameOver = false
@@ -45,7 +46,19 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         self.SetUp()
         self.startStudentsCycle()
         
+        let doubleTapGesture = UITapGestureRecognizer(target: self, action: #selector(handleDoubleTap(_:)))
+        doubleTapGesture.numberOfTapsRequired = 2
+        view.addGestureRecognizer(doubleTapGesture)
     }
+    
+    @objc func handleDoubleTap(_ gesture: UITapGestureRecognizer) {
+            // Gestisci il doppio tap qui
+        if (gesture.state == .ended && !isJumping) {
+                // Chiamata alla funzione di salto del personaggio
+                doubleJump()
+            }
+        
+        }
     
     func setUp() {
         
@@ -70,8 +83,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         player = SKSpriteNode(imageNamed: "player_1")
         player.name = "player"
-        player.position = CGPoint(x: -self.frame.size.width / 2 + 100, y: -self.frame.size.height / 2 + 64)
-        player.size = CGSize(width: 64, height: 64)
+        //       player.position = CGPoint(x: -self.frame.size.width / 2 + 100, y: -self.frame.size.height / 2 + 64)
+        player.position = CGPoint(x: -self.frame.size.width / 2 + 130, y: -self.frame.size.height / 2 + 94)
+        //        player.size = CGSize(width: 64, height: 64)
+        player.size = CGSize(width: 80, height: 80)
         
         player.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: player.size.width / 2, height: player.size.height))
         player.physicsBody?.affectedByGravity = false
@@ -103,7 +118,22 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let createAndWaitAction = SKAction.sequence([createStudentAction, waitAction])
         let studentCycleAction = SKAction.repeatForever(createAndWaitAction)
         
+        run(SKAction.sequence([
+            SKAction.wait(forDuration: 1.5),
+            SKAction.run(startStudentsCycle2)
+        ]))
+        
         run(studentCycleAction)
+    }
+    
+    func startStudentsCycle2() {
+        let createStudentAction2 = SKAction.run(createStudent)
+        let waitAction2 = SKAction.wait(forDuration: 2.0)
+        
+        let createAndWaitAction2 = SKAction.sequence([createStudentAction2, waitAction2])
+        let studentCycleAction2 = SKAction.repeatForever(createAndWaitAction2)
+        
+        run(studentCycleAction2)
     }
     
     override func update(_ currentTime: TimeInterval) {
@@ -126,14 +156,19 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
 }
-    
+
 // MARK: - User Interaction
 
 extension GameScene {
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        if(!isJumping){
+        if(!isJumping && !isDoubleJumping){
             playerJump()
+        }
+        else{
+            if (!isDoubleJumping) {
+                doubleJump()
+            }
         }
     }
     
@@ -150,6 +185,21 @@ extension GameScene {
             self.isJumping = false
         }
     }
+    
+    func doubleJump() {
+        isDoubleJumping = true
+        
+        let jumpUpAction = SKAction.moveBy(x: 0, y: 200, duration: 0.3)
+        let stayUpAction = SKAction.moveBy(x: 0, y: 20 , duration: 0.1)
+        let StayDownAction = SKAction.moveBy(x: 0, y: -20, duration: 0.1)
+        let jumpDownAction = SKAction.moveBy(x: 0, y: -200, duration: 0.3)
+        let jumpSequence = SKAction.sequence([jumpUpAction, stayUpAction, StayDownAction, jumpDownAction])
+        
+        player.run(jumpSequence) {
+            self.isDoubleJumping = false
+        }
+        
+    }
 }
 
 // MARK: - Students
@@ -164,8 +214,11 @@ extension GameScene {
         let i = Int.random(in: 1...4)
         let newStudent = SKSpriteNode(texture: SKTexture(imageNamed: "student\(i)_1"))
         newStudent.name = "student"
-        newStudent.size = CGSize(width: 48, height: 48)
-        newStudent.position = CGPoint(x: self.frame.size.width / 2 + 50, y: -self.frame.size.height / 2 + 60)
+        //        newStudent.size = CGSize(width: 48, height: 48)
+        newStudent.size = CGSize(width: 60, height: 60)
+        //        newStudent.position = CGPoint(x: self.frame.size.width / 2 + 50, y: -self.frame.size.height / 2 + 60)
+        newStudent.position = CGPoint(x: self.frame.size.width / 2 + 80, y: -self.frame.size.height / 2 + 90)
+        
         
         newStudent.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: newStudent.size.width / 2, height: newStudent.size.height))
         newStudent.physicsBody?.affectedByGravity = false
@@ -192,9 +245,7 @@ extension GameScene {
         newStudent.run(sequenceAction) {
             self.score += 1
         }
-        
     }
-    
 }
 
 // MARK: - Contacts and Collisions
@@ -223,9 +274,9 @@ extension GameScene {
 extension GameScene {
     
     func SetUp() {
-        let node1 = SKSpriteNode(imageNamed: "heart")
-        let node2 = SKSpriteNode(imageNamed: "heart")
-        let node3 = SKSpriteNode(imageNamed: "heart")
+        let node1 = SKSpriteNode(imageNamed: "Heart")
+        let node2 = SKSpriteNode(imageNamed: "Heart")
+        let node3 = SKSpriteNode(imageNamed: "Heart")
         heartsNodes.append(node1)
         heartsNodes.append(node2)
         heartsNodes.append(node3)
@@ -250,9 +301,8 @@ extension GameScene {
     
     func presentNewScene() {
         let newScene = GameOverScene(size: self.size)
-        newScene.scaleMode = self.scaleMode
-
+        newScene.scaleMode = .aspectFill
+        UserDefaults.standard.set(score, forKey: "score")
         self.view?.presentScene(newScene, transition: SKTransition.crossFade(withDuration: 1.0))
     }
-    
 }
