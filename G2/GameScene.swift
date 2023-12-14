@@ -46,19 +46,18 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         self.SetUp()
         self.startStudentsCycle()
         
-        let doubleTapGesture = UITapGestureRecognizer(target: self, action: #selector(handleDoubleTap(_:)))
-        doubleTapGesture.numberOfTapsRequired = 2
-        view.addGestureRecognizer(doubleTapGesture)
+//        let doubleTapGesture = UITapGestureRecognizer(target: self, action: #selector(handleDoubleTap(_:)))
+//        doubleTapGesture.numberOfTapsRequired = 2
+//        view.addGestureRecognizer(doubleTapGesture)
     }
     
-    @objc func handleDoubleTap(_ gesture: UITapGestureRecognizer) {
-            // Gestisci il doppio tap qui
-        if (gesture.state == .ended && !isJumping) {
-                // Chiamata alla funzione di salto del personaggio
-                doubleJump()
-            }
-        
-        }
+//    @objc func handleDoubleTap(_ gesture: UITapGestureRecognizer) {
+//            // Gestisci il doppio tap qui
+//        if (gesture.state == .ended && !isJumping) {
+//                // Chiamata alla funzione di salto del personaggio
+//                doubleJump()
+//            }
+//        }
     
     func setUp() {
         

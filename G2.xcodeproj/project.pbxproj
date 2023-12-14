@@ -17,6 +17,7 @@
 		27FF20F72B20F6ED00A45DD1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 27FF20F52B20F6ED00A45DD1 /* Main.storyboard */; };
 		27FF20F92B20F6EE00A45DD1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 27FF20F82B20F6EE00A45DD1 /* Assets.xcassets */; };
 		27FF20FC2B20F6EE00A45DD1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 27FF20FA2B20F6EE00A45DD1 /* LaunchScreen.storyboard */; };
+		BBD797CB2B2B14F0008FE6B4 /* GameMenuScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBD797CA2B2B14F0008FE6B4 /* GameMenuScene.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -31,6 +32,7 @@
 		27FF20F62B20F6ED00A45DD1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		27FF20F82B20F6EE00A45DD1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		27FF20FB2B20F6EE00A45DD1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		BBD797CA2B2B14F0008FE6B4 /* GameMenuScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameMenuScene.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -69,6 +71,7 @@
 				27FF20EB2B20F6ED00A45DD1 /* AppDelegate.swift */,
 				27FF20F12B20F6ED00A45DD1 /* GameScene.swift */,
 				27FF20F32B20F6ED00A45DD1 /* GameViewController.swift */,
+				BBD797CA2B2B14F0008FE6B4 /* GameMenuScene.swift */,
 				27CB15232B28A7E000DD02B9 /* santosong.mp3 */,
 				27FF20F82B20F6EE00A45DD1 /* Assets.xcassets */,
 				27FF20F52B20F6ED00A45DD1 /* Main.storyboard */,
@@ -152,6 +155,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				27CB15282B28ACB900DD02B9 /* GameOverScene.swift in Sources */,
+				BBD797CB2B2B14F0008FE6B4 /* GameMenuScene.swift in Sources */,
 				27FF20F22B20F6ED00A45DD1 /* GameScene.swift in Sources */,
 				27FF20F42B20F6ED00A45DD1 /* GameViewController.swift in Sources */,
 				27FF20EC2B20F6ED00A45DD1 /* AppDelegate.swift in Sources */,
