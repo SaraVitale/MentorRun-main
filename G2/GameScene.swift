@@ -15,9 +15,8 @@ struct PhysicsCategory {
     static let all : UInt32 = UInt32.max
     static let player : UInt32 = 0b1
     static let student : UInt32 = 0b10
-    
-    // CIAO
-    // ciao di nuovo
+    static let candy : UInt32 = 0b11
+    static let poop : UInt32 = 0b100
     
 }
 
@@ -25,13 +24,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     var background1: SKSpriteNode!
     var background2: SKSpriteNode!
-    var background3: SKSpriteNode!
     var player: SKSpriteNode!
     var isJumping: Bool = false
     var isDoubleJumping: Bool = false
     var life: Int = 3
     var heartsNodes: [SKSpriteNode] = []
-    var GameOver = false
     let backgroundSpeed: CGFloat = 3.0
     var scoreLabel: SKLabelNode!
     var score:Int = 0 {
@@ -43,21 +40,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     override func didMove(to view: SKView) {
         
         self.setUp()
-        self.SetUp()
         self.startStudentsCycle()
+        self.startCandyAndPoopCycle()
         
-//        let doubleTapGesture = UITapGestureRecognizer(target: self, action: #selector(handleDoubleTap(_:)))
-//        doubleTapGesture.numberOfTapsRequired = 2
-//        view.addGestureRecognizer(doubleTapGesture)
     }
-    
-//    @objc func handleDoubleTap(_ gesture: UITapGestureRecognizer) {
-//            // Gestisci il doppio tap qui
-//        if (gesture.state == .ended && !isJumping) {
-//                // Chiamata alla funzione di salto del personaggio
-//                doubleJump()
-//            }
-//        }
     
     func setUp() {
         
@@ -82,9 +68,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         player = SKSpriteNode(imageNamed: "player_1")
         player.name = "player"
-        //       player.position = CGPoint(x: -self.frame.size.width / 2 + 100, y: -self.frame.size.height / 2 + 64)
         player.position = CGPoint(x: -self.frame.size.width / 2 + 130, y: -self.frame.size.height / 2 + 94)
-        //        player.size = CGSize(width: 64, height: 64)
         player.size = CGSize(width: 80, height: 80)
         
         player.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: player.size.width / 2, height: player.size.height))
@@ -108,31 +92,42 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         self.addChild(scoreLabel)
         
+        let node1 = SKSpriteNode(imageNamed: "heart")
+        let node2 = SKSpriteNode(imageNamed: "heart")
+        let node3 = SKSpriteNode(imageNamed: "heart")
+        heartsNodes.append(node1)
+        heartsNodes.append(node2)
+        heartsNodes.append(node3)
+        SetUpLifePos(node1, i:70.0, j:0.0)
+        SetUpLifePos(node2, i:120.0, j:0.0)
+        SetUpLifePos(node3, i:170.0, j:0.0)
+        
+    }
+    
+    func SetUpLifePos (_ node: SKSpriteNode, i: CGFloat, j: CGFloat) {
+        node.zPosition = 50.0
+        node.position = CGPoint(x: -self.frame.size.width/2 + i, y: self.frame.size.height/2 - 30)
+        self.addChild(node)
     }
     
     func startStudentsCycle() {
         let createStudentAction = SKAction.run(createStudent)
-        let waitAction = SKAction.wait(forDuration: 4.0)
+        let waitAction = SKAction.wait(forDuration: Double(Int.random(in: 1...4)))
+        let repeatAction = SKAction.run(startStudentsCycle)
         
-        let createAndWaitAction = SKAction.sequence([createStudentAction, waitAction])
-        let studentCycleAction = SKAction.repeatForever(createAndWaitAction)
+        let cycleAction = SKAction.sequence([createStudentAction, waitAction, repeatAction])
         
-        run(SKAction.sequence([
-            SKAction.wait(forDuration: 1.5),
-            SKAction.run(startStudentsCycle2)
-        ]))
-        
-        run(studentCycleAction)
+        run(cycleAction)
     }
     
-    func startStudentsCycle2() {
-        let createStudentAction2 = SKAction.run(createStudent)
-        let waitAction2 = SKAction.wait(forDuration: 2.0)
+    func startCandyAndPoopCycle() {
+        let createAction = SKAction.run(createCandyOrPoop)
+        let waitAction = SKAction.wait(forDuration: Double(Int.random(in: 5...10)))
+        let repeatAction = SKAction.run(startCandyAndPoopCycle)
         
-        let createAndWaitAction2 = SKAction.sequence([createStudentAction2, waitAction2])
-        let studentCycleAction2 = SKAction.repeatForever(createAndWaitAction2)
+        let cycleAction = SKAction.sequence([createAction, waitAction, repeatAction])
         
-        run(studentCycleAction2)
+        run(cycleAction)
     }
     
     override func update(_ currentTime: TimeInterval) {
@@ -173,12 +168,16 @@ extension GameScene {
     
     func playerJump() {
         isJumping = true
+        isDoubleJumping = true
         
         let jumpUpAction = SKAction.moveBy(x: 0, y: 100, duration: 0.3)
+        let enableDoubleJump = SKAction.run {
+            self.isDoubleJumping = false
+        }
         let stayUpAction = SKAction.moveBy(x: 0, y: 20 , duration: 0.1)
         let StayDownAction = SKAction.moveBy(x: 0, y: -20, duration: 0.1)
         let jumpDownAction = SKAction.moveBy(x: 0, y: -100, duration: 0.3)
-        let jumpSequence = SKAction.sequence([jumpUpAction, stayUpAction, StayDownAction, jumpDownAction])
+        let jumpSequence = SKAction.sequence([jumpUpAction, enableDoubleJump, stayUpAction, StayDownAction, jumpDownAction])
         
         player.run(jumpSequence) {
             self.isJumping = false
@@ -188,10 +187,10 @@ extension GameScene {
     func doubleJump() {
         isDoubleJumping = true
         
-        let jumpUpAction = SKAction.moveBy(x: 0, y: 200, duration: 0.3)
+        let jumpUpAction = SKAction.moveBy(x: 0, y: 150, duration: 0.25)
         let stayUpAction = SKAction.moveBy(x: 0, y: 20 , duration: 0.1)
         let StayDownAction = SKAction.moveBy(x: 0, y: -20, duration: 0.1)
-        let jumpDownAction = SKAction.moveBy(x: 0, y: -200, duration: 0.3)
+        let jumpDownAction = SKAction.moveBy(x: 0, y: -150, duration: 0.25)
         let jumpSequence = SKAction.sequence([jumpUpAction, stayUpAction, StayDownAction, jumpDownAction])
         
         player.run(jumpSequence) {
@@ -213,9 +212,7 @@ extension GameScene {
         let i = Int.random(in: 1...4)
         let newStudent = SKSpriteNode(texture: SKTexture(imageNamed: "student\(i)_1"))
         newStudent.name = "student"
-        //        newStudent.size = CGSize(width: 48, height: 48)
         newStudent.size = CGSize(width: 60, height: 60)
-        //        newStudent.position = CGPoint(x: self.frame.size.width / 2 + 50, y: -self.frame.size.height / 2 + 60)
         newStudent.position = CGPoint(x: self.frame.size.width / 2 + 80, y: -self.frame.size.height / 2 + 90)
         
         
@@ -247,6 +244,81 @@ extension GameScene {
     }
 }
 
+// MARK: - Candy and Poop
+
+extension GameScene {
+    
+    private func createCandyOrPoop() {
+        
+        let j: Int = Int.random(in: 0...10)
+        if j < 7 {
+            newCandy()
+        } else {
+            newPoop()
+        }
+        
+    }
+    
+    private func newCandy() {
+        
+        let i = Int.random(in: 1...3)
+        let newCandy = SKSpriteNode(texture: SKTexture(imageNamed: "candy\(i)"))
+        newCandy.name = "candy"
+        newCandy.size = CGSize(width: 50, height: 50)
+        newCandy.position = CGPoint(x: self.frame.size.width / 2 + 80, y: 10)
+        
+        
+        newCandy.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: newCandy.size.width / 2, height: newCandy.size.height))
+        newCandy.physicsBody?.affectedByGravity = false
+        
+        newCandy.physicsBody?.categoryBitMask = PhysicsCategory.candy
+        
+        newCandy.physicsBody?.contactTestBitMask = PhysicsCategory.player
+        
+        addChild(newCandy)
+        
+        let moveAction = SKAction.moveBy(x: -self.frame.size.width - 50, y: 0, duration: 5)
+        let removeAction = SKAction.removeFromParent()
+        
+        let sequenceAction = SKAction.sequence([moveAction, removeAction])
+        
+        newCandy.run(sequenceAction)
+        
+    }
+    
+    private func newPoop() {
+        
+        let newPoop = SKSpriteNode(texture: SKTexture(imageNamed: "poop1"))
+        newPoop.name = "poop"
+        newPoop.size = CGSize(width: 75, height: 45)
+        newPoop.position = CGPoint(x: self.frame.size.width / 2 + 80, y: 10)
+        
+        
+        newPoop.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: newPoop.size.width / 2, height: newPoop.size.height))
+        newPoop.physicsBody?.affectedByGravity = false
+        
+        newPoop.physicsBody?.categoryBitMask = PhysicsCategory.poop
+        
+        newPoop.physicsBody?.contactTestBitMask = PhysicsCategory.player
+        
+        addChild(newPoop)
+        
+        let animationAction = SKAction.animate(with: [SKTexture(imageNamed: "poop1"), SKTexture(imageNamed: "poop2")], timePerFrame: 0.10)
+        let moveAction = SKAction.moveBy(x: -self.frame.size.width - 50, y: 0, duration: 5)
+        let removeAction = SKAction.removeFromParent()
+        
+        let animationSequence = SKAction.repeat(animationAction, count: 25)
+        
+        let groupAction = SKAction.group([animationSequence, moveAction])
+        
+        let sequenceAction = SKAction.sequence([groupAction, removeAction])
+        
+        newPoop.run(sequenceAction)
+        
+    }
+    
+}
+
 // MARK: - Contacts and Collisions
 
 extension GameScene {
@@ -263,6 +335,50 @@ extension GameScene {
             node.removeFromParent()
             handleGameOver()
         }
+        if let node = firstBody.node, node.name == "candy" {
+            let sparkleNode = SKSpriteNode(imageNamed: "sparkle_1")
+            sparkleNode.size = CGSize(width: 50, height: 50)
+            sparkleNode.position = node.position
+            node.removeFromParent()
+            self.addChild(sparkleNode)
+            let moveAction = SKAction.moveBy(x: -15, y: 0, duration: 0.15)
+            let imageAction = SKAction.animate(with: [SKTexture(imageNamed: "sparkle_1"), SKTexture(imageNamed: "sparkle_2"), SKTexture(imageNamed: "sparkle_3"), SKTexture(imageNamed: "sparkle_4")], timePerFrame: 0.05)
+            let animationAction = SKAction.group([moveAction, imageAction])
+            let removeAction = SKAction.removeFromParent()
+            let sequenceAction = SKAction.sequence([animationAction, removeAction])
+            sparkleNode.run(sequenceAction)
+            score += 5
+        }
+        if let node = secondBody.node, node.name == "candy" {
+            let sparkleNode = SKSpriteNode(imageNamed: "sparkle_1")
+            sparkleNode.size = CGSize(width: 50, height: 50)
+            sparkleNode.position = node.position
+            node.removeFromParent()
+            self.addChild(sparkleNode)
+            let moveAction = SKAction.moveBy(x: -15, y: 0, duration: 0.15)
+            let imageAction = SKAction.animate(with: [SKTexture(imageNamed: "sparkle_1"), SKTexture(imageNamed: "sparkle_2"), SKTexture(imageNamed: "sparkle_3"), SKTexture(imageNamed: "sparkle_4")], timePerFrame: 0.05)
+            let animationAction = SKAction.group([moveAction, imageAction])
+            let removeAction = SKAction.removeFromParent()
+            let sequenceAction = SKAction.sequence([animationAction, removeAction])
+            sparkleNode.run(sequenceAction)
+            score += 5
+        }
+        if let node = firstBody.node, node.name == "poop" {
+            node.removeFromParent()
+            if score > 9 {
+                score -= 10
+            } else {
+                score = 0
+            }
+        }
+        if let node = secondBody.node, node.name == "poop" {
+            node.removeFromParent()
+            if score > 9 {
+                score -= 10
+            } else {
+                score = 0
+            }
+        }
         
     }
     
@@ -271,24 +387,6 @@ extension GameScene {
 // MARK: - GameOver
 
 extension GameScene {
-    
-    func SetUp() {
-        let node1 = SKSpriteNode(imageNamed: "Heart")
-        let node2 = SKSpriteNode(imageNamed: "Heart")
-        let node3 = SKSpriteNode(imageNamed: "Heart")
-        heartsNodes.append(node1)
-        heartsNodes.append(node2)
-        heartsNodes.append(node3)
-        SetUpLifePos(node1, i:70.0, j:0.0)
-        SetUpLifePos(node2, i:120.0, j:0.0)
-        SetUpLifePos(node3, i:170.0, j:0.0)
-    }
-    
-    func SetUpLifePos (_ node: SKSpriteNode, i: CGFloat, j: CGFloat) {
-        node.zPosition = 50.0
-        node.position = CGPoint(x: -self.frame.size.width/2 + i, y: self.frame.size.height/2 - 30)
-        self.addChild(node)
-    }
     
     func handleGameOver() {
         life -= 1
@@ -304,4 +402,5 @@ extension GameScene {
         UserDefaults.standard.set(score, forKey: "score")
         self.view?.presentScene(newScene, transition: SKTransition.crossFade(withDuration: 1.0))
     }
+    
 }
