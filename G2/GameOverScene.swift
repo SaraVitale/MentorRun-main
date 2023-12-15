@@ -88,12 +88,12 @@ class GameOverScene: SKScene {
     }
     
     func restartGame() {
-       if let gameScene = GameScene(fileNamed: "GameScene") {
+        if let gameScene = GameScene(fileNamed: "GameScene") {
             gameScene.scaleMode = .resizeFill
             view?.presentScene(gameScene)
         }
     }
-
+    
     func goToMenu() {
         let game = GameMenuScene()
         game.scaleMode = .resizeFill

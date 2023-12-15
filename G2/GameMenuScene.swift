@@ -20,7 +20,7 @@ class GameMenuScene: SKScene {
     var MaraPlayer: SKSpriteNode!
     
     var player: Int = 1
-
+    
     
     override func didMove(to view: SKView) {
         createMenu()
@@ -87,16 +87,16 @@ class GameMenuScene: SKScene {
             switch touchedNode.name {
                 
             case "SantoPlayer":
-
+                
                 MaraPlayer.texture = SKTexture(imageNamed: "maraPlayer")
                 
                 SantoPlayer.texture = SKTexture(imageNamed: "SantoPlayerSelected")
                 
                 player = 1
-            
+                
             case "MaraPlayer":
                 SantoPlayer.texture = SKTexture(imageNamed: "santoPlayer")
-
+                
                 MaraPlayer.texture = SKTexture(imageNamed: "MaraPlayerSelected")
                 
                 player = 2
@@ -106,20 +106,6 @@ class GameMenuScene: SKScene {
             case .some(_):
                 MaraPlayer
             }
-            
-            
-            
-//            if touchedNode.name == "SantoPlayer" {
-//                SantoPlayer.texture = SKTexture(imageNamed: "SantoPlayerSelected")
-//                SantoPlayer.attributeValues =
-//                
-//            }
-//            else{ 
-//                MaraPlayer.texture = SKTexture(imageNamed: "MaraPlayerSelected")
-//            }
-//            else{
-//                
-//            }
         }
     }
 }
