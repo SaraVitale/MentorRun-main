@@ -26,6 +26,9 @@ class GameMenuScene: SKScene {
     
     func createMenu() {
         
+        let backgroundSound = SKAudioNode(fileNamed: "menu.mp3")
+        self.addChild(backgroundSound)
+        
         firstBackground = SKSpriteNode(imageNamed: "bg")
         firstBackground.position = CGPoint(x: size.width / 2, y: size.height / 2)
         firstBackground.zPosition = -1
@@ -75,9 +78,5 @@ class GameMenuScene: SKScene {
             }
         }
     }
-//    func presentMenu() {
-//        let game = GameMenuScene(size: self.size)
-//        game.scaleMode = .aspectFill
-//        self.view?.presentScene(game, transition: SKTransition.crossFade(withDuration: 1.0))
-//    }
+    
 }

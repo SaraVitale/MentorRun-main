@@ -17,6 +17,7 @@ struct PhysicsCategory {
     static let student : UInt32 = 0b10
     static let candy : UInt32 = 0b11
     static let poop : UInt32 = 0b100
+    static let heart : UInt32 = 0b101
     
 }
 
@@ -253,9 +254,41 @@ extension GameScene {
         let j: Int = Int.random(in: 0...10)
         if j < 7 {
             newCandy()
-        } else {
+        } else if j > 7 {
             newPoop()
+        } else {
+            if life < 3 {
+                newHeart()
+            } else {
+                newCandy()
+            }
         }
+        
+    }
+    
+    private func newHeart() {
+        
+        let newHeart = SKSpriteNode(texture: SKTexture(imageNamed: "heart"))
+        newHeart.name = "heart"
+        newHeart.size = CGSize(width: 70, height: 40)
+        newHeart.position = CGPoint(x: self.frame.size.width / 2 + 80, y: 10)
+        
+        
+        newHeart.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: newHeart.size.width / 2, height: newHeart.size.height))
+        newHeart.physicsBody?.affectedByGravity = false
+        
+        newHeart.physicsBody?.categoryBitMask = PhysicsCategory.heart
+        
+        newHeart.physicsBody?.contactTestBitMask = PhysicsCategory.player
+        
+        addChild(newHeart)
+        
+        let moveAction = SKAction.moveBy(x: -self.frame.size.width - 50, y: 0, duration: 5)
+        let removeAction = SKAction.removeFromParent()
+        
+        let sequenceAction = SKAction.sequence([moveAction, removeAction])
+        
+        newHeart.run(sequenceAction)
         
     }
     
@@ -379,6 +412,16 @@ extension GameScene {
                 score = 0
             }
         }
+        if let node = firstBody.node, node.name == "heart" {
+            node.removeFromParent()
+            heartsNodes[life].texture = SKTexture(imageNamed: "heart")
+            life += 1
+        }
+        if let node = secondBody.node, node.name == "heart" {
+            node.removeFromParent()
+            heartsNodes[life].texture = SKTexture(imageNamed: "heart")
+            life += 1
+        }
         
     }
     
@@ -400,7 +443,7 @@ extension GameScene {
         let newScene = GameOverScene(size: self.size)
         newScene.scaleMode = .aspectFill
         UserDefaults.standard.set(score, forKey: "score")
-        self.view?.presentScene(newScene, transition: SKTransition.crossFade(withDuration: 1.0))
+        self.view?.presentScene(newScene, transition: SKTransition.crossFade(withDuration: 0.0))
     }
     
 }

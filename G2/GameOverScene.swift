@@ -24,6 +24,13 @@ class GameOverScene: SKScene {
     
     func setUp() {
         
+        let gameOverSound = SKAudioNode(fileNamed: "gameover")
+        gameOverSound.autoplayLooped = false
+        self.addChild(gameOverSound)
+        
+        let playAction = SKAction.play()
+        gameOverSound.run(playAction)
+        
         background = SKSpriteNode(imageNamed: "bg")
         background.position = CGPoint(x: size.width / 2, y: size.height / 2)
         background.zPosition = -1
@@ -76,7 +83,6 @@ class GameOverScene: SKScene {
             
             if (touchedNode.name == "ReturnToMenu") {
                 goToMenu()
-                print("cliccato")
             }
         }
     }
@@ -89,12 +95,9 @@ class GameOverScene: SKScene {
     }
 
     func goToMenu() {
-//        if let game = GameMenuScene(fileNamed: "GameMenuScene") {
-            let game = GameMenuScene()
-            game.scaleMode = .resizeFill
-            print("cliccato23")
-            view?.presentScene(game)
-//        }
+        let game = GameMenuScene()
+        game.scaleMode = .resizeFill
+        view?.presentScene(game)
     }
 }
 
