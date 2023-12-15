@@ -14,6 +14,8 @@ class GameOverScene: SKScene {
     var background: SKSpriteNode!
     var tryAgainButton: SKSpriteNode!
     var gameOver: SKSpriteNode!
+    var goMenu: SKSpriteNode!
+    
     //   var finalScore: SKSpriteNode!
     
     override func didMove(to view: SKView) {
@@ -37,11 +39,19 @@ class GameOverScene: SKScene {
         self.addChild(gameOver)
         
         tryAgainButton = SKSpriteNode(imageNamed: "restart")
-        tryAgainButton.position = CGPoint(x: self.frame.size.width/2, y: self.frame.size.height/2 - 100)
+        tryAgainButton.position = CGPoint(x: self.frame.size.width/2 - 120, y: self.frame.size.height/2 - 106)
         tryAgainButton.scale(to: CGSize(width: self.frame.width/4, height: self.frame.height/4))
         tryAgainButton.name = "tryAgainButton"
         
         self.addChild(tryAgainButton)
+        
+        goMenu = SKSpriteNode(imageNamed: "returnMenu")
+        goMenu.position = CGPoint(x: self.frame.size.width / 2 + 120, y: self.frame.size.height / 2 - 100 )
+        goMenu.zPosition = 50
+        goMenu.scale(to: CGSize(width: self.frame.width / 4, height: self.frame.height / 4))
+        goMenu.name = "ReturnToMenu"
+        
+        self.addChild(goMenu)
         
         let scoreLab = SKLabelNode(fontNamed: "AmericanTypewriter-Bold")
         scoreLab.text = "Final Score: \( UserDefaults.standard.value(forKey: "score") as? Int ?? 0)"
@@ -60,68 +70,33 @@ class GameOverScene: SKScene {
             let location = touch.location(in: self)
             let touchedNode = atPoint(location)
             
-            if touchedNode.name == "tryAgainButton" {
+            if (touchedNode.name == "tryAgainButton") {
                 restartGame()
+            }
+            
+            if (touchedNode.name == "ReturnToMenu") {
+                goToMenu()
+                print("cliccato")
             }
         }
     }
     
     func restartGame() {
-        if let gameScene = GameScene(fileNamed: "GameScene") {
+       if let gameScene = GameScene(fileNamed: "GameScene") {
             gameScene.scaleMode = .resizeFill
             view?.presentScene(gameScene)
         }
     }
+
+    func goToMenu() {
+//        if let game = GameMenuScene(fileNamed: "GameMenuScene") {
+            let game = GameMenuScene()
+            game.scaleMode = .resizeFill
+            print("cliccato23")
+            view?.presentScene(game)
+//        }
+    }
 }
 
-//class GameOverScene: SKScene {
-//    
-//    var background: SKSpriteNode!
-//    var restart: SKSpriteNode!
-//    var gameOver: SKSpriteNode!
-//    
-//    override func didMove(to view: SKView) {
-//        
-//        self.setUp()
-//        
-//    }
-//    
-//    func setUp() {
-//        
-//        background = SKSpriteNode(imageNamed: "bg")
-//        background.position = CGPoint(x: self.frame.size.width/2, y: self.frame.size.height/2)
-//        background.zPosition = -1
-//        background.size = CGSize(width: self.frame.size.width, height: self.frame.size.height)
-//        
-//        self.addChild(background)
-//        
-//        gameOver = SKSpriteNode(imageNamed: "gameover")
-//        gameOver.position = CGPoint(x: self.frame.size.width/2, y: self.frame.size.height/2 + 100)
-//        gameOver.scale(to: CGSize(width: self.frame.width/4, height: self.frame.height/4))
-//        
-//        self.addChild(gameOver)
-//        
-//        restart = SKSpriteNode(imageNamed: "restart")
-//        restart.position = CGPoint(x: self.frame.size.width/2, y: self.frame.size.height/2)
-//        restart.scale(to: CGSize(width: self.frame.width/4, height: self.frame.height/4))
-//        
-//        self.addChild(restart)
-//        
-//    }
-//    
-//    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-//            for touch in touches {
-//                let location = touch.location(in: self)
-//
-//                if restart.frame.contains(location) {
-//                    let newScene = GameScene(size: self.size)
-//                    newScene.scaleMode = self.scaleMode
-//
-//                    self.view?.presentScene(newScene, transition: SKTransition.crossFade(withDuration: 1.0))
-//                }
-//            }
-//        }
-//    
-//}
 
 

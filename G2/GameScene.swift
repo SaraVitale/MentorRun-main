@@ -273,9 +273,9 @@ extension GameScene {
 extension GameScene {
     
     func SetUp() {
-        let node1 = SKSpriteNode(imageNamed: "heart")
-        let node2 = SKSpriteNode(imageNamed: "heart")
-        let node3 = SKSpriteNode(imageNamed: "heart")
+        let node1 = SKSpriteNode(imageNamed: "Heart")
+        let node2 = SKSpriteNode(imageNamed: "Heart")
+        let node3 = SKSpriteNode(imageNamed: "Heart")
         heartsNodes.append(node1)
         heartsNodes.append(node2)
         heartsNodes.append(node3)

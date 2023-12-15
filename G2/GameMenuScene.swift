@@ -14,6 +14,10 @@ class GameMenuScene: SKScene {
     var firstBackground: SKSpriteNode!
     var playButton: SKSpriteNode!
     var playerButton: SKSpriteNode!
+    var gameName: SKSpriteNode!
+    
+    var SantoPlayer: SKSpriteNode!
+    var MaraPlayer: SKSpriteNode!
     
     override func didMove(to view: SKView) {
         createMenu()
@@ -29,12 +33,31 @@ class GameMenuScene: SKScene {
         
         self.addChild(firstBackground)
         
+        gameName = SKSpriteNode(imageNamed: "gameName")
+        gameName.position = CGPoint(x: size.width / 2, y: size.height / 2 + 90)
+        gameName.size = CGSize(width: self.frame.size.width / 3, height: self.frame.size.height / 3)
+        
+        self.addChild(gameName)
+        
+        SantoPlayer = SKSpriteNode(imageNamed: "santoPlayer")
+        SantoPlayer.position = CGPoint(x: size.width / 2 - 100, y: size.height / 2 - 40)
+        SantoPlayer.size = CGSize(width: self.frame.size.width / 3, height: self.frame.size.height / 3)
+        
+        self.addChild(SantoPlayer)
+        
+        
+        MaraPlayer = SKSpriteNode(imageNamed: "maraPlayer")
+        MaraPlayer.position = CGPoint(x: size.width / 2 + 100, y: size.height / 2 - 40)
+        MaraPlayer.size = CGSize(width: self.frame.size.width / 3, height: self.frame.size.height / 3)
+        
+        self.addChild(MaraPlayer)
+        
         
         playButton = SKSpriteNode(imageNamed: "play")
         playButton.name = "playButton"
-        playButton.position = CGPoint(x: self.frame.size.width / 2, y: self.frame.size.height / 2 - 20)
+        playButton.position = CGPoint(x: self.frame.size.width / 2, y: self.frame.size.height / 2 - 170)
         playButton.scale(to: CGSize(width: self.frame.width / 4, height: self.frame.height / 4))
-
+        
         self.addChild(playButton)
         
     }
@@ -50,8 +73,11 @@ class GameMenuScene: SKScene {
                 gameMainScene.anchorPoint = CGPoint(x: 0.5, y: 0.5)
                 view?.presentScene(gameMainScene, transition: .crossFade(withDuration: 0.5))
             }
-            
-            
         }
     }
+//    func presentMenu() {
+//        let game = GameMenuScene(size: self.size)
+//        game.scaleMode = .aspectFill
+//        self.view?.presentScene(game, transition: SKTransition.crossFade(withDuration: 1.0))
+//    }
 }
