@@ -67,7 +67,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         self.addChild(background2)
         
-        player = SKSpriteNode(imageNamed: "player_1")
+//        if(UserDefaults.standard.value(forKey: "player") as? Int ?? 1) == 1){
+        
+        if(UserDefaults.standard.value(forKey: "player") as! Int == 1){
+        player = SKSpriteNode(imageNamed: "player1_1")
         player.name = "player"
         player.position = CGPoint(x: -self.frame.size.width / 2 + 130, y: -self.frame.size.height / 2 + 94)
         player.size = CGSize(width: 80, height: 80)
@@ -78,11 +81,33 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         player.physicsBody?.contactTestBitMask = PhysicsCategory.student
         player.physicsBody?.collisionBitMask = PhysicsCategory.student
         
-        let animationAction = SKAction.animate(with: [SKTexture(imageNamed: "player_1"), SKTexture(imageNamed: "player_2"), SKTexture(imageNamed: "player_3"), SKTexture(imageNamed: "player_4"), SKTexture(imageNamed: "player_5"), SKTexture(imageNamed: "player_6"), SKTexture(imageNamed: "player_7"), SKTexture(imageNamed: "player_8")], timePerFrame: 0.10)
+        let animationAction = SKAction.animate(with: [SKTexture(imageNamed: "player1_1"), SKTexture(imageNamed: "player1_2"), SKTexture(imageNamed: "player1_3"), SKTexture(imageNamed: "player1_4"), SKTexture(imageNamed: "player1_5"), SKTexture(imageNamed: "player1_6"), SKTexture(imageNamed: "player1_7"), SKTexture(imageNamed: "player1_8")], timePerFrame: 0.10)
         let runAction = SKAction.repeatForever(animationAction)
         player.run(runAction)
         
         self.addChild(player)
+    }
+        
+        
+        if(UserDefaults.standard.value(forKey: "player") as! Int == 2){
+        player = SKSpriteNode(imageNamed: "player2_1")
+        player.name = "player"
+        player.position = CGPoint(x: -self.frame.size.width / 2 + 130, y: -self.frame.size.height / 2 + 94)
+        player.size = CGSize(width: 80, height: 80)
+        
+        player.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: player.size.width / 2, height: player.size.height))
+        player.physicsBody?.affectedByGravity = false
+        player.physicsBody?.categoryBitMask = PhysicsCategory.player
+        player.physicsBody?.contactTestBitMask = PhysicsCategory.student
+        player.physicsBody?.collisionBitMask = PhysicsCategory.student
+        
+        let animationAction = SKAction.animate(with: [SKTexture(imageNamed: "player2_1"), SKTexture(imageNamed: "player2_2"), SKTexture(imageNamed: "player2_3"), SKTexture(imageNamed: "player2_4"), SKTexture(imageNamed: "player2_5"), SKTexture(imageNamed: "player2_6"), SKTexture(imageNamed: "player2_7"), SKTexture(imageNamed: "player2_8")], timePerFrame: 0.10)
+        let runAction = SKAction.repeatForever(animationAction)
+        player.run(runAction)
+        
+        self.addChild(player)
+        
+    }
         
         scoreLabel = SKLabelNode(text: "Score: 0")
         scoreLabel.position = CGPoint(x: 0, y: self.frame.size.height / 2 - 50)

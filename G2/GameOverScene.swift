@@ -64,7 +64,7 @@ class GameOverScene: SKScene {
         scoreLab.text = "Final Score: \( UserDefaults.standard.value(forKey: "score") as? Int ?? 0)"
         scoreLab.fontSize = 40
         scoreLab.fontColor = SKColor.white
-        scoreLab.position = CGPoint(x: self.frame.size.width/2, y: self.frame.size.height/2 - 20)
+        scoreLab.position = CGPoint(x: self.frame.size.width/2, y: self.frame.size.height/2 - 30)
         
         self.addChild(scoreLab)
         

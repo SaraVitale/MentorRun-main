@@ -19,6 +19,9 @@ class GameMenuScene: SKScene {
     var SantoPlayer: SKSpriteNode!
     var MaraPlayer: SKSpriteNode!
     
+    var player: Int = 1
+
+    
     override func didMove(to view: SKView) {
         createMenu()
     }
@@ -37,28 +40,30 @@ class GameMenuScene: SKScene {
         self.addChild(firstBackground)
         
         gameName = SKSpriteNode(imageNamed: "gameName")
-        gameName.position = CGPoint(x: size.width / 2, y: size.height / 2 + 90)
+        gameName.position = CGPoint(x: size.width / 2, y: size.height / 2 + 100)
         gameName.size = CGSize(width: self.frame.size.width / 3, height: self.frame.size.height / 3)
         
         self.addChild(gameName)
         
-        SantoPlayer = SKSpriteNode(imageNamed: "santoPlayer")
-        SantoPlayer.position = CGPoint(x: size.width / 2 - 100, y: size.height / 2 - 40)
-        SantoPlayer.size = CGSize(width: self.frame.size.width / 3, height: self.frame.size.height / 3)
+        SantoPlayer = SKSpriteNode(imageNamed: "SantoPlayerSelected")
+        SantoPlayer.position = CGPoint(x: size.width / 2 - 100, y: size.height / 2 - 30)
+        SantoPlayer.size = CGSize(width: self.frame.size.width / 4, height: self.frame.size.height / 2.5)
+        SantoPlayer.name = "SantoPlayer"
         
         self.addChild(SantoPlayer)
         
         
         MaraPlayer = SKSpriteNode(imageNamed: "maraPlayer")
-        MaraPlayer.position = CGPoint(x: size.width / 2 + 100, y: size.height / 2 - 40)
-        MaraPlayer.size = CGSize(width: self.frame.size.width / 3, height: self.frame.size.height / 3)
+        MaraPlayer.position = CGPoint(x: size.width / 2 + 100, y: size.height / 2 - 30)
+        MaraPlayer.size = CGSize(width: self.frame.size.width / 4, height: self.frame.size.height / 2.5)
+        MaraPlayer.name = "MaraPlayer"
         
         self.addChild(MaraPlayer)
         
         
         playButton = SKSpriteNode(imageNamed: "play")
         playButton.name = "playButton"
-        playButton.position = CGPoint(x: self.frame.size.width / 2, y: self.frame.size.height / 2 - 170)
+        playButton.position = CGPoint(x: self.frame.size.width / 2, y: self.frame.size.height / 2 - 150)
         playButton.scale(to: CGSize(width: self.frame.width / 4, height: self.frame.height / 4))
         
         self.addChild(playButton)
@@ -74,9 +79,47 @@ class GameMenuScene: SKScene {
                 let gameMainScene = GameScene(size: size)
                 gameMainScene.scaleMode = scaleMode
                 gameMainScene.anchorPoint = CGPoint(x: 0.5, y: 0.5)
+                UserDefaults.standard.setValue(player, forKey: "player")
                 view?.presentScene(gameMainScene, transition: .crossFade(withDuration: 0.5))
             }
+            
+            
+            switch touchedNode.name {
+                
+            case "SantoPlayer":
+
+                MaraPlayer.texture = SKTexture(imageNamed: "maraPlayer")
+                
+                SantoPlayer.texture = SKTexture(imageNamed: "SantoPlayerSelected")
+                
+                player = 1
+            
+            case "MaraPlayer":
+                SantoPlayer.texture = SKTexture(imageNamed: "santoPlayer")
+
+                MaraPlayer.texture = SKTexture(imageNamed: "MaraPlayerSelected")
+                
+                player = 2
+                
+            case .none:
+                SantoPlayer
+            case .some(_):
+                MaraPlayer
+            }
+            
+            
+            
+//            if touchedNode.name == "SantoPlayer" {
+//                SantoPlayer.texture = SKTexture(imageNamed: "SantoPlayerSelected")
+//                SantoPlayer.attributeValues =
+//                
+//            }
+//            else{ 
+//                MaraPlayer.texture = SKTexture(imageNamed: "MaraPlayerSelected")
+//            }
+//            else{
+//                
+//            }
         }
     }
-    
 }
