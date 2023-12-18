@@ -11,19 +11,35 @@ import GameplayKit
 
 class GameViewController: UIViewController {
     
+    //MARK: Tutorial
+    var isFirstLaunch: Bool {
+        get {
+            return !UserDefaults.standard.bool(forKey: "hasLaunchedBefore")
+        }
+        set {
+            UserDefaults.standard.set(!newValue, forKey: "hasLaunchedBefore")
+        }
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         
         if let view = self.view as! SKView? {
             
-            let menuScene = GameMenuScene(size: view.bounds.size)
-            menuScene.scaleMode = .resizeFill
-            
-            view.presentScene(menuScene)
+            if isFirstLaunch {
+                let tutorialScene = Tutorial(size: view.bounds.size)
+                tutorialScene.scaleMode = .resizeFill
+                view.presentScene(tutorialScene)
+                isFirstLaunch = false
+            }
+            else{
+                let menuScene = GameMenuScene(size: view.bounds.size)
+                menuScene.scaleMode = .resizeFill
+                view.presentScene(menuScene)
+            }
             
             view.ignoresSiblingOrder = true
-            view.showsFPS = true
-            view.showsNodeCount = true
+            view.showsFPS = false
+            view.showsNodeCount = false
         }
     }
     

@@ -38,11 +38,32 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
     }
     
+    var isFirstLaunch: Bool {
+        get {
+            return !UserDefaults.standard.bool(forKey: "hasLaunchedBefore")
+        }
+        set {
+            UserDefaults.standard.set(!newValue, forKey: "hasLaunchedBefore")
+        }
+    }
+    
     override func didMove(to view: SKView) {
         
+        if isFirstLaunch {
+            showingTutorial()
+            isFirstLaunch = false
+        }
         self.setUp()
         self.startStudentsCycle()
         self.startCandyAndPoopCycle()
+        
+    }
+    
+    func showingTutorial() { 
+        
+        let tutorialScene = Tutorial()
+        tutorialScene.position = CGPoint(x: size.width / 2, y: size.height / 2)
+        addChild(tutorialScene)
         
     }
     

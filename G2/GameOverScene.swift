@@ -95,10 +95,13 @@ class GameOverScene: SKScene {
     }
     
     func goToMenu() {
-        let game = GameMenuScene()
-        game.scaleMode = .resizeFill
-        view?.presentScene(game)
+        if let game = GameMenuScene(fileNamed: "GameMenuScene"){
+            game.scaleMode = .resizeFill
+            game.anchorPoint = CGPoint(x: 0, y: 0)
+            view?.presentScene(game)
+        }
     }
+    
 }
 
 

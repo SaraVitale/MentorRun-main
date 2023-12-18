@@ -9,7 +9,7 @@ import SwiftUI
 import SpriteKit
 import GameplayKit
 
-class GameMenuScene: SKScene {
+class GameMenuScene: SKScene, SKPhysicsContactDelegate {
     
     var firstBackground: SKSpriteNode!
     var playButton: SKSpriteNode!
@@ -25,7 +25,6 @@ class GameMenuScene: SKScene {
     override func didMove(to view: SKView) {
         createMenu()
     }
-    
     
     func createMenu() {
         
@@ -89,22 +88,21 @@ class GameMenuScene: SKScene {
             case "SantoPlayer":
                 
                 MaraPlayer.texture = SKTexture(imageNamed: "maraPlayer")
-                
                 SantoPlayer.texture = SKTexture(imageNamed: "SantoPlayerSelected")
                 
                 player = 1
                 
             case "MaraPlayer":
-                SantoPlayer.texture = SKTexture(imageNamed: "santoPlayer")
                 
+                SantoPlayer.texture = SKTexture(imageNamed: "santoPlayer")
                 MaraPlayer.texture = SKTexture(imageNamed: "MaraPlayerSelected")
                 
                 player = 2
                 
             case .none:
-                SantoPlayer
+                SantoPlayer.texture = SKTexture(imageNamed: "SantoPlayerSelected")
             case .some(_):
-                MaraPlayer
+                MaraPlayer.texture = SKTexture(imageNamed: "maraPlayer")
             }
         }
     }

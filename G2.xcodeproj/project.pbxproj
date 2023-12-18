@@ -19,6 +19,8 @@
 		27FF20F72B20F6ED00A45DD1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 27FF20F52B20F6ED00A45DD1 /* Main.storyboard */; };
 		27FF20F92B20F6EE00A45DD1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 27FF20F82B20F6EE00A45DD1 /* Assets.xcassets */; };
 		27FF20FC2B20F6EE00A45DD1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 27FF20FA2B20F6EE00A45DD1 /* LaunchScreen.storyboard */; };
+		BB162EFA2B2CF0850096A57A /* GameMenuScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = BB162EF92B2CF0850096A57A /* GameMenuScene.sks */; };
+		BB162EFC2B2CFDEA0096A57A /* Tutorial.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB162EFB2B2CFDEA0096A57A /* Tutorial.swift */; };
 		BBD797CB2B2B14F0008FE6B4 /* GameMenuScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBD797CA2B2B14F0008FE6B4 /* GameMenuScene.swift */; };
 /* End PBXBuildFile section */
 
@@ -36,6 +38,8 @@
 		27FF20F62B20F6ED00A45DD1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		27FF20F82B20F6EE00A45DD1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		27FF20FB2B20F6EE00A45DD1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		BB162EF92B2CF0850096A57A /* GameMenuScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameMenuScene.sks; sourceTree = "<group>"; };
+		BB162EFB2B2CFDEA0096A57A /* Tutorial.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tutorial.swift; sourceTree = "<group>"; };
 		BBD797CA2B2B14F0008FE6B4 /* GameMenuScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameMenuScene.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -71,9 +75,11 @@
 			children = (
 				27B353412B2294B20097028B /* Actions.sks */,
 				27B3533F2B2294960097028B /* GameScene.sks */,
+				BB162EF92B2CF0850096A57A /* GameMenuScene.sks */,
 				27CB15272B28ACB900DD02B9 /* GameOverScene.swift */,
 				27FF20EB2B20F6ED00A45DD1 /* AppDelegate.swift */,
 				27FF20F12B20F6ED00A45DD1 /* GameScene.swift */,
+				BB162EFB2B2CFDEA0096A57A /* Tutorial.swift */,
 				27FF20F32B20F6ED00A45DD1 /* GameViewController.swift */,
 				BBD797CA2B2B14F0008FE6B4 /* GameMenuScene.swift */,
 				27E8746B2B2C994D00C4EF8F /* gameover.mp3 */,
@@ -150,6 +156,7 @@
 				27FF20F72B20F6ED00A45DD1 /* Main.storyboard in Resources */,
 				27FF20F92B20F6EE00A45DD1 /* Assets.xcassets in Resources */,
 				27FF20FC2B20F6EE00A45DD1 /* LaunchScreen.storyboard in Resources */,
+				BB162EFA2B2CF0850096A57A /* GameMenuScene.sks in Resources */,
 				27B353422B2294B20097028B /* Actions.sks in Resources */,
 				27CB15242B28A7E000DD02B9 /* santosong.mp3 in Resources */,
 			);
@@ -164,6 +171,7 @@
 			files = (
 				27CB15282B28ACB900DD02B9 /* GameOverScene.swift in Sources */,
 				BBD797CB2B2B14F0008FE6B4 /* GameMenuScene.swift in Sources */,
+				BB162EFC2B2CFDEA0096A57A /* Tutorial.swift in Sources */,
 				27FF20F22B20F6ED00A45DD1 /* GameScene.swift in Sources */,
 				27FF20F42B20F6ED00A45DD1 /* GameViewController.swift in Sources */,
 				27FF20EC2B20F6ED00A45DD1 /* AppDelegate.swift in Sources */,
