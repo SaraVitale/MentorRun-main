@@ -50,6 +50,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     override func didMove(to view: SKView) {
         
         if isFirstLaunch {
+            UserDefaults.standard.setValue(0, forKey: "maxScore")
             showingTutorial()
             isFirstLaunch = false
         }

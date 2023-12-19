@@ -68,9 +68,21 @@ class GameOverScene: SKScene {
         
         self.addChild(scoreLab)
         
+        let score = UserDefaults.standard.integer(forKey: "score")
+        var maxScore = UserDefaults.standard.integer(forKey: "maxScore")
+        if score > maxScore {
+            maxScore = score
+            UserDefaults.standard.setValue(maxScore, forKey: "maxScore")
+        }
+        
+        let maxLab = SKLabelNode(fontNamed: "AmericanTypewriter-Bold")
+        maxLab.text = "Your personal best: \(maxScore)"
+        maxLab.fontSize = 25
+        maxLab.fontColor = SKColor.white
+        maxLab.position = CGPoint(x: self.frame.size.width / 2 + 250, y: self.frame.size.height - 100)
+        self.addChild(maxLab)
+        
     }
-    
-    var score: Int? = 0
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         for touch in touches {

@@ -26,6 +26,7 @@ class GameViewController: UIViewController {
         if let view = self.view as! SKView? {
             
             if isFirstLaunch {
+                UserDefaults.standard.setValue(0, forKey: "maxScore")
                 let tutorialScene = Tutorial(size: view.bounds.size)
                 tutorialScene.scaleMode = .resizeFill
                 view.presentScene(tutorialScene)
